@@ -1,10 +1,18 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 
 dotenv.config();
-const app = express();
+const PORT = process.env.PORT || "8000";
 
-const PORT = process.env.PORT;
+const app = express();
+const port = 8000;
+
+const corsOption = {
+  origin: "*",
+};
+
+app.use(cors(corsOption));
 
 const fetchCryptoPrices = async () => {
   try {
@@ -15,10 +23,12 @@ const fetchCryptoPrices = async () => {
     const response = await fetch(url);
     const prices = await response.json();
 
-    // Log the prices to the console
-    console.log("Bitcoin (BTC) price in EUR:", prices.bitcoin.eur);
-    console.log("Ethereum (ETH) price in EUR:", prices.ethereum.eur);
-    console.log("Dogecoin (DOGE) price in EUR:", prices.dogecoin.eur);
+    const price = {
+      bitcoin: prices.bitcoin.eur,
+      ethereum: prices.ethereum.eur,
+      dogecoin: prices.dogecoin.eur,
+    };
+    createPrice(price);
   } catch (error) {
     console.error("Error fetching cryptocurrency prices:", error);
   }
@@ -27,9 +37,10 @@ const fetchCryptoPrices = async () => {
 fetchCryptoPrices();
 setInterval(fetchCryptoPrices, 60000);
 
-app.get("/", (request: Request, response: Response) => {
-  response.status(200).send("Hello World");
-});
+// Api
+import router from "./routes";
+import { createPrice } from "./controllers/PriceController";
+app.use("/", router);
 
 app
   .listen(PORT, () => {
