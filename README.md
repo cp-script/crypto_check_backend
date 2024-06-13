@@ -23,7 +23,7 @@
     Copy over the contents of the <code>.env.example</code> files into the newly created <code>.env</code> files.
     Replace the values with your own configuration.</li>
     <li>Config database: Run <code>npx prisma generate</code> and <code>npx prisma db push</code> inside the server folder</li>
-    <li>Start dev server: After the install finishes, run <code>npm run start</code>.</li>
+    <li>Start dev server: After the install finishes, run <code>npm start</code>.</li>
 </ol>
 
 ---
